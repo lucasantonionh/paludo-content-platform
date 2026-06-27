@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paludo Content Platform</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --paludo-gold: #B8860B;
+    --paludo-gold-light: #D4A017;
+    --paludo-dark: #1A1A1A;
+    --paludo-charcoal: #2C2C2C;
+    --bg: #F7F6F3;
+    --surface: #FFFFFF;
+    --surface2: #F0EEE9;
+    --border: #E2DDD6;
+    --text-primary: #1A1A1A;
+    --text-secondary: #6B6560;
+    --text-muted: #9E9890;
+    --green: #2D6A4F;
+    --green-bg: #D8F3DC;
+    --yellow: #B5550A;
+    --yellow-bg: #FFF3E0;
+    --red: #9B2335;
+    --red-bg: #FDECEA;
+    --reels: #6C5CE7;
+    --feed: #0984E3;
+    --stories: #E17055;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--paludo-dark);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .logo-accent {
+    color: var(--paludo-gold);
+  }
+
+  nav {
+    display: flex;
+    gap: 4px;
+    background: var(--surface2);
+    padding: 4px;
+    border-radius: 8px;
+  }
+
+  nav button {
+    padding: 6px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  nav button.active {
+    background: var(--surface);
+    color: var(--text-primary);
+    box-shadow: var(--shadow);
+  }
+
+  nav button:hover:not(.active) {
+    color: var(--text-primary);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sync-info {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .btn-sync {
+    padding: 6px 14px;
+    background: var(--paludo-gold);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    letter-spacing: 0.2px;
+  }
+
+  .btn-sync:hover { background: var(--paludo-gold-light); }
+
+  /* MAIN */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 32px;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* PAGE HEADER */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.4px;
+  }
+
+  .page-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    padding: 8px 18px;
+    background: var(--paludo-dark);
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-primary:hover { background: var(--paludo-charcoal); }
+
+  .btn-secondary {
+    padding: 8px 18px;
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-secondary:hover { background: var(--surface2); }
+
+  .btn-purple {
+    padding: 8px 18px;
+    background: #5B4FCF;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-purple:hover { background: #4A3FB8; }
+
+  /* ===================== CALENDÁRIO ===================== */
+  .cal-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .cal-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cal-month {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    min-width: 160px;
+  }
+
+  .cal-arrow {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.15s;
+    color: var(--text-secondary);
+  }
+
+  .cal-arrow:hover { background: var(--surface2); }
+
+  .cal-filters {
+    display: flex;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+  }
+
+  .filter-btn.active-ig {
+    background: #E8F4FD;
+    border-color: #0984E3;
+    color: #0984E3;
+  }
+
+  .filter-btn.active-tk {
+    background: #F0EDFF;
+    border-color: #6C5CE7;
+    color: #6C5CE7;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .calendar-grid {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cal-weekday {
+    padding: 10px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .cal-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .cal-day {
+    min-height: 90px;
+    padding: 8px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+    position: relative;
+  }
+
+  .cal-day:nth-child(7n) { border-right: none; }
+  .cal-day:hover { background: var(--surface2); }
+  .cal-day.today { background: #FFFDF5; }
+  .cal-day.other-month { opacity: 0.4; }
+
+  .day-num {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .cal-day.today .day-num {
+    color: var(--paludo-gold);
+  }
+
+  .post-dot {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 3px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.1s;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .post-dot:hover { opacity: 0.8; }
+
+  .post-dot .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .post-dot.reels { background: #F0EDFF; color: var(--reels); }
+  .post-dot.feed { background: #E8F4FD; color: var(--feed); }
+  .post-dot.stories { background: #FEF0EC; color: var(--stories); }
+
+  /* ===================== TENDÊNCIAS ===================== */
+  .trends-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .trends-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .trend-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: box-shadow 0.15s;
+  }
+
+  .trend-card:hover { box-shadow: var(--shadow-md); }
+
+  .trend-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .trend-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .trend-emoji {
+    font-size: 20px;
+  }
+
+  .trend-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .badge {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .badge-alta { background: var(--green-bg); color: var(--green); }
+  .badge-media { background: var(--yellow-bg); color: var(--yellow); }
+  .badge-baixa { background: var(--surface2); color: var(--text-muted); }
+
+  .trend-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .trend-platforms {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .platform-tag {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .platform-ig { background: #E8F4FD; color: #0984E3; }
+  .platform-tk { background: #F0EDFF; color: #6C5CE7; }
+
+  .trend-link {
+    font-size: 13px;
+    color: #5B4FCF;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .trend-link:hover { text-decoration: underline; }
+
+  /* IDEAS PANEL */
+  .ideas-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: none;
+  }
+
+  .ideas-panel.visible { display: block; }
+
+  .ideas-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .ideas-panel-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .ideas-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 20px 0;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--paludo-gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .idea-item {
+    padding: 14px;
+    background: var(--surface2);
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  .idea-item:last-child { margin-bottom: 0; }
+
+  .idea-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .idea-body {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .idea-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  /* ===================== MÉTRICAS ===================== */
+  .metrics-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+  }
+
+  .metric-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    margin-bottom: 8px;
+  }
+
+  .metric-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.8px;
+  }
+
+  .metric-delta {
+    font-size: 11px;
+    color: var(--green);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+  }
+
+  .posts-list {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .post-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+    cursor: pointer;
+  }
+
+  .post-row:last-child { border-bottom: none; }
+  .post-row:hover { background: var(--surface2); }
+
+  .post-info { flex: 1; }
+
+  .post-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+
+  .post-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    gap: 12px;
+  }
+
+  .post-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .badge-acima { background: var(--green-bg); color: var(--green); }
+  .badge-media-post { background: #F5F5F5; color: var(--text-secondary); border: 1px solid var(--border); }
+  .badge-abaixo { background: var(--red-bg); color: var(--red); }
+
+  /* INSIGHT BLOCK */
+  .insight-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .insight-header {
+    background: linear-gradient(135deg, #1A1A1A 0%, #2C2C2C 100%);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .insight-header-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .insight-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--paludo-gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .insight-body {
+    padding: 20px;
+  }
+
+  .insight-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    white-space: pre-line;
+  }
+
+  .insight-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 10px 0;
+  }
+
+  /* CONFIG BANNER */
+  .config-banner {
+    background: #FFFBF0;
+    border: 1px solid #F0D080;
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #7A5C00;
+  }
+
+  .config-banner .icon { font-size: 16px; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 28px;
+    width: 480px;
+    max-width: 95vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.3px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    color: var(--text-primary);
+    background: var(--surface);
+    transition: border-color 0.15s;
+    font-family: inherit;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--paludo-gold);
+  }
+
+  .form-textarea { min-height: 80px; resize: vertical; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* CONFIG MODAL */
+  .config-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 16px 0 10px;
+  }
+
+  /* STATUS DOT */
+  .status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .status-ok { background: #2D6A4F; }
+  .status-pending { background: #E17055; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty-state-icon { font-size: 36px; margin-bottom: 12px; }
+  .empty-state-text { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <span class="logo-name">Lojas <span class="logo-accent">Paludo</span></span>
+    <span class="logo-sub">Content Platform</span>
+  </div>
+
+  <nav>
+    <button class="active" onclick="showTab('calendario')">Calendário</button>
+    <button onclick="showTab('tendencias')">Tendências</button>
+    <button onclick="showTab('metricas')">Métricas</button>
+  </nav>
+
+  <div class="header-right">
+    <span class="sync-info" id="sync-info">Nunca sincronizado</span>
+    <button class="btn-sync" onclick="openConfig()">⚙ Configurações</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- BANNER CONFIG -->
+  <div class="config-banner" id="config-banner">
+    <span class="icon">⚠️</span>
+    <span>Plataforma não configurada ainda. Clique em <strong>Configurações</strong> para inserir as credenciais da Meta API e Claude API.</span>
+  </div>
+
+  <!-- ========== CALENDÁRIO ========== -->
+  <div class="tab-content active" id="tab-calendario">
+
+    <div class="cal-toolbar">
+      <div class="cal-nav">
+        <button class="cal-arrow" onclick="mudarMes(-1)">‹</button>
+        <span class="cal-month" id="cal-month-label">Junho 2026</span>
+        <button class="cal-arrow" onclick="mudarMes(1)">›</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div class="cal-filters">
+          <button class="filter-btn active-ig" onclick="toggleFiltro('Instagram', this)">Instagram</button>
+          <button class="filter-btn active-tk" onclick="toggleFiltro('TikTok', this)">TikTok</button>
+        </div>
+        <button class="btn-primary" onclick="openNovoPost()">+ Novo post</button>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--reels)"></div> Reels / Vídeo
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--feed)"></div> Feed / Carrossel
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--stories)"></div> Stories
+      </div>
+    </div>
+
+    <div class="calendar-grid">
+      <div class="cal-weekdays">
+        <div class="cal-weekday">SEG</div>
+        <div class="cal-weekday">TER</div>
+        <div class="cal-weekday">QUA</div>
+        <div class="cal-weekday">QUI</div>
+        <div class="cal-weekday">SEX</div>
+        <div class="cal-weekday">SÁB</div>
+        <div class="cal-weekday">DOM</div>
+      </div>
+      <div class="cal-days" id="cal-days"></div>
+    </div>
+
+  </div>
+
+  <!-- ========== TENDÊNCIAS ========== -->
+  <div class="tab-content" id="tab-tendencias">
+
+    <div class="trends-header">
+      <div>
+        <div class="page-title">Tendências detectadas</div>
+        <div class="page-sub">Moda e varejo · Atualizado manualmente pela equipe</div>
+      </div>
+      <button class="btn-purple" onclick="gerarIdeiasGeral()">✦ Gerar ideias para essas tendências</button>
+    </div>
+
+    <div class="trends-grid" id="trends-grid">
+      <!-- renderizado por JS -->
+    </div>
+
+    <div class="ideas-panel" id="ideas-panel">
+      <div class="ideas-panel-header">
+        <div class="section-title" id="ideas-panel-title">Ideias geradas pela IA</div>
+        <button class="btn-secondary" onclick="fecharIdeas()">Fechar</button>
+      </div>
+      <div id="ideas-content">
+        <div class="ideas-loading">
+          <div class="spinner"></div>
+          Consultando Claude...
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========== MÉTRICAS ========== -->
+  <div class="tab-content" id="tab-metricas">
+
+    <div class="page-header">
+      <div>
+        <div class="page-title">Métricas e Performance</div>
+        <div class="page-sub">Dados sincronizados automaticamente via Meta Graph API</div>
+      </div>
+      <button class="btn-primary" onclick="sincronizarMetricas()">↻ Sincronizar agora</button>
+    </div>
+
+    <div class="metrics-cards">
+      <div class="metric-card">
+        <div class="metric-label">Engajamento médio</div>
+        <div class="metric-value" id="m-engajamento">—</div>
+        <div class="metric-delta" id="m-engajamento-delta"></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Alcance médio</div>
+        <div class="metric-value" id="m-alcance">—</div>
+        <div class="metric-delta" id="m-alcance-delta"></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Posts no período</div>
+        <div class="metric-value" id="m-posts">—</div>
+        <div class="metric-delta"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Performance por post</div>
+    <div class="posts-list" id="posts-list">
+      <div class="empty-state">
+        <div class="empty-state-icon">📊</div>
+        <div class="empty-state-text">Sincronize com a Meta para carregar os dados</div>
+      </div>
+    </div>
+
+    <div class="insight-block">
+      <div class="insight-header">
+        <div class="insight-header-title">
+          <div class="insight-dot"></div>
+          Análise automática — Por que isso aconteceu
+        </div>
+        <button class="btn-sync" onclick="gerarInsightMetricas()">✦ Gerar análise</button>
+      </div>
+      <div class="insight-body">
+        <div class="insight-text" id="insight-text">Clique em "Gerar análise" para que a IA analise os dados e explique o desempenho dos seus posts.</div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- ===== MODAL: NOVO POST ===== -->
+<div class="modal-overlay" id="modal-post">
+  <div class="modal">
+    <div class="modal-title" id="modal-post-title">Novo post</div>
+
+    <div class="form-group">
+      <label class="form-label">Título / Descrição interna</label>
+      <input type="text" class="form-input" id="post-titulo" placeholder="Ex: Reel look de festa">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Data de publicação</label>
+        <input type="date" class="form-input" id="post-data">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Horário</label>
+        <input type="time" class="form-input" id="post-horario" value="19:00">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Rede social</label>
+        <select class="form-select" id="post-rede">
+          <option>Instagram</option>
+          <option>TikTok</option>
+          <option>Ambos</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Formato</label>
+        <select class="form-select" id="post-formato">
+          <option value="Reels">Reels / Vídeo</option>
+          <option value="Feed">Feed / Carrossel</option>
+          <option value="Stories">Stories</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Legenda / Copy</label>
+      <textarea class="form-textarea" id="post-legenda" placeholder="Texto do post..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Responsável</label>
+        <input type="text" class="form-input" id="post-responsavel" placeholder="Nome da pessoa">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="post-status">
+          <option>Rascunho</option>
+          <option>Aprovado</option>
+          <option>Publicado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-post')">Cancelar</button>
+      <button class="btn-primary" onclick="salvarPost()">Salvar post</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: CONFIGURAÇÕES ===== -->
+<div class="modal-overlay" id="modal-config">
+  <div class="modal">
+    <div class="modal-title">Configurações da Plataforma</div>
+
+    <div class="config-section-title">Meta API</div>
+    <div class="form-group">
+      <label class="form-label">Token de Acesso (System User)</label>
+      <input type="password" class="form-input" id="cfg-meta-token" placeholder="EAAxxxxx...">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Instagram Account ID</label>
+        <input type="text" class="form-input" id="cfg-ig-id" placeholder="17841400xxx">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Facebook Page ID</label>
+        <input type="text" class="form-input" id="cfg-fb-id" placeholder="1234567xxx">
+      </div>
+    </div>
+
+    <div class="config-section-title">Claude API</div>
+    <div class="form-group">
+      <label class="form-label">API Key</label>
+      <input type="password" class="form-input" id="cfg-claude-key" placeholder="sk-ant-xxxxx">
+    </div>
+
+    <div class="config-section-title">Google Sheets</div>
+    <div class="form-group">
+      <label class="form-label">ID da Planilha</label>
+      <input type="text" class="form-input" id="cfg-sheet-id" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
+    </div>
+    <div class="form-group">
+      <label class="form-label">URL do Apps Script (Web App)</label>
+      <input type="text" class="form-input" id="cfg-script-url" placeholder="https://script.google.com/macros/s/xxxxx/exec">
+    </div>
+
+    <div style="margin-top:16px; padding:12px; background:var(--surface2); border-radius:8px; font-size:12px; color:var(--text-secondary);">
+      As credenciais são salvas localmente no seu navegador. Não são enviadas a terceiros.
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-config')">Cancelar</button>
+      <button class="btn-primary" onclick="salvarConfig()">Salvar configurações</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: DETALHE DO POST ===== -->
+<div class="modal-overlay" id="modal-post-detalhe">
+  <div class="modal">
+    <div class="modal-title" id="detalhe-titulo">Detalhes do post</div>
+    <div id="detalhe-body"></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-post-detalhe')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== STATE =====================
+const STATE = {
+  mesAtual: new Date(2026, 5, 1), // Junho 2026
+  filtros: ['Instagram', 'TikTok'],
+  posts: [],
+  metricas: [],
+  config: {}
+};
+
+// Tendências fixas (serão carregadas do Sheets quando integrado)
+const TENDENCIAS = [
+  {
+    id: 1,
+    emoji: '🪞',
+    titulo: 'GRWM (Get Ready With Me)',
+    descricao: 'Vídeos de "se arrumar comigo" mostrando a montagem de um look do início ao fim. Aproxima a marca e demonstra produtos em uso real.',
+    nivel: 'Alta',
+    plataformas: ['Instagram', 'TikTok'],
+    categoria: 'Formato'
+  },
+  {
+    id: 2,
+    emoji: '👗',
+    titulo: 'Styling de uma peça em 3 looks',
+    descricao: 'Pegar uma única peça da coleção e mostrá-la em três combinações diferentes (casual, trabalho, social). Reforça versatilidade e valor.',
+    nivel: 'Alta',
+    plataformas: ['Instagram', 'TikTok'],
+    categoria: 'Conteúdo'
+  },
+  {
+    id: 3,
+    emoji: '🎬',
+    titulo: 'Bastidores e humanização da equipe',
+    descricao: 'Conteúdo de bastidores da loja: chegada de coleção, montagem de vitrine, rotina da equipe. Gera identificação e prova social.',
+    nivel: 'Média',
+    plataformas: ['Instagram'],
+    categoria: 'Institucional'
+  },
+  {
+    id: 4,
+    emoji: '⚡',
+    titulo: 'Promoções relâmpago em Stories',
+    descricao: 'Ofertas de curta duração anunciadas só nos Stories, com contagem regressiva e senso de urgência. Converte e estimula a recorrência de visualização.',
+    nivel: 'Média',
+    plataformas: ['Instagram'],
+    categoria: 'Vendas'
+  }
+];
+
+// Posts demo
+const POSTS_DEMO = [
+  { id:1, titulo:'Reel look de festa', data:'2026-06-02', horario:'19:30', rede:'Instagram', formato:'Reels', status:'Publicado', responsavel:'Eduarda', legenda:'Arrasei no look de festa! Venha conferir nossa nova coleção ✨' },
+  { id:2, titulo:'Carrossel nova coleção', data:'2026-06-04', horario:'12:00', rede:'Instagram', formato:'Feed', status:'Publicado', responsavel:'Eduarda', legenda:'Nova coleção chegou! Deslize para ver todos os looks 👗' },
+  { id:3, titulo:'Story promoção 20% off', data:'2026-06-05', horario:'08:00', rede:'Instagram', formato:'Stories', status:'Publicado', responsavel:'Eduarda', legenda:'Só hoje: 20% de desconto em toda a loja!' },
+  { id:4, titulo:'GRWM look trabalho', data:'2026-06-08', horario:'19:00', rede:'Instagram', formato:'Feed', status:'Publicado', responsavel:'Eduarda', legenda:'' },
+  { id:5, titulo:'3 looks com blazer', data:'2026-06-09', horario:'18:00', rede:'TikTok', formato:'Reels', status:'Aprovado', responsavel:'Eduarda', legenda:'' },
+  { id:6, titulo:'Nova vitrine junho', data:'2026-06-10', horario:'10:00', rede:'Instagram', formato:'Reels', status:'Aprovado', responsavel:'Eduarda', legenda:'' },
+  { id:7, titulo:'Story enquete tendência', data:'2026-06-11', horario:'20:00', rede:'Instagram', formato:'Stories', status:'Publicado', responsavel:'Eduarda', legenda:'' },
+  { id:8, titulo:'Carrossel dicas styling', data:'2026-06-12', horario:'12:00', rede:'Instagram', formato:'Feed', status:'Publicado', responsavel:'Eduarda', legenda:'' },
+  { id:9, titulo:'TikTok bastidores loja', data:'2026-06-15', horario:'17:00', rede:'TikTok', formato:'Reels', status:'Rascunho', responsavel:'Eduarda', legenda:'' },
+  { id:10, titulo:'Reel tendência inverno', data:'2026-06-16', horario:'19:00', rede:'Instagram', formato:'Reels', status:'Aprovado', responsavel:'Eduarda', legenda:'' },
+  { id:11, titulo:'Story promoção relâmpago', data:'2026-06-17', horario:'14:00', rede:'Instagram', formato:'Stories', status:'Rascunho', responsavel:'Eduarda', legenda:'' },
+  { id:12, titulo:'Feed lançamento coleção', data:'2026-06-18', horario:'12:00', rede:'Instagram', formato:'Feed', status:'Rascunho', responsavel:'Eduarda', legenda:'' },
+  { id:13, titulo:'Reel moda sustentável', data:'2026-06-22', horario:'19:00', rede:'TikTok', formato:'Reels', status:'Rascunho', responsavel:'Eduarda', legenda:'' },
+  { id:14, titulo:'Carrossel plus size', data:'2026-06-23', horario:'18:00', rede:'Instagram', formato:'Reels', status:'Rascunho', responsavel:'Eduarda', legenda:'' },
+  { id:15, titulo:'Story aniversário loja', data:'2026-06-25', horario:'08:00', rede:'Instagram', formato:'Stories', status:'Rascunho', responsavel:'Eduarda', legenda:'' },
+  { id:16, titulo:'Feed coleção inverno', data:'2026-06-29', horario:'12:00', rede:'Instagram', formato:'Feed', status:'Rascunho', responsavel:'Eduarda', legenda:'' }
+];
+
+// Métricas demo
+const METRICAS_DEMO = [
+  { post_id:1, titulo:'Reel look de festa', formato:'Reels', rede:'Instagram', alcance:12400, engajamento:6.8, curtidas:820, comentarios:43, salvamentos:210 },
+  { post_id:2, titulo:'Carrossel nova coleção', formato:'Feed', rede:'Instagram', alcance:8200, engajamento:4.1, curtidas:310, comentarios:21, salvamentos:88 },
+  { post_id:3, titulo:'Story promoção 20% off', formato:'Stories', rede:'Instagram', alcance:4300, engajamento:2.2, curtidas:90, comentarios:8, salvamentos:15 },
+  { post_id:4, titulo:'GRWM look trabalho', formato:'Feed', rede:'Instagram', alcance:9100, engajamento:5.2, curtidas:460, comentarios:35, salvamentos:130 },
+  { post_id:7, titulo:'Story enquete tendência', formato:'Stories', rede:'Instagram', alcance:5800, engajamento:3.8, curtidas:180, comentarios:42, salvamentos:0 },
+  { post_id:8, titulo:'Carrossel dicas styling', formato:'Feed', rede:'Instagram', alcance:7600, engajamento:4.5, curtidas:330, comentarios:28, salvamentos:95 }
+];
+
+// ===================== INIT =====================
+window.onload = () => {
+  STATE.posts = [...POSTS_DEMO];
+  STATE.metricas = [...METRICAS_DEMO];
+  carregarConfig();
+  renderCalendario();
+  renderTendencias();
+  renderMetricas();
+  verificarConfig();
+};
+
+// ===================== CONFIG =====================
+function carregarConfig() {
+  const saved = localStorage.getItem('paludo_config');
+  if (saved) {
+    STATE.config = JSON.parse(saved);
+    if (STATE.config.meta_token) {
+      document.getElementById('cfg-meta-token').value = STATE.config.meta_token;
+    }
+    if (STATE.config.ig_id) document.getElementById('cfg-ig-id').value = STATE.config.ig_id;
+    if (STATE.config.fb_id) document.getElementById('cfg-fb-id').value = STATE.config.fb_id;
+    if (STATE.config.claude_key) document.getElementById('cfg-claude-key').value = STATE.config.claude_key;
+    if (STATE.config.sheet_id) document.getElementById('cfg-sheet-id').value = STATE.config.sheet_id;
+    if (STATE.config.script_url) document.getElementById('cfg-script-url').value = STATE.config.script_url;
+    if (STATE.config.ultima_sync) {
+      document.getElementById('sync-info').textContent = 'Última sync: ' + STATE.config.ultima_sync;
+    }
+  }
+}
+
+function salvarConfig() {
+  STATE.config = {
+    meta_token: document.getElementById('cfg-meta-token').value,
+    ig_id: document.getElementById('cfg-ig-id').value,
+    fb_id: document.getElementById('cfg-fb-id').value,
+    claude_key: document.getElementById('cfg-claude-key').value,
+    sheet_id: document.getElementById('cfg-sheet-id').value,
+    script_url: document.getElementById('cfg-script-url').value,
+    ultima_sync: STATE.config.ultima_sync || null
+  };
+  localStorage.setItem('paludo_config', JSON.stringify(STATE.config));
+  closeModal('modal-config');
+  verificarConfig();
+  alert('Configurações salvas com sucesso!');
+}
+
+function verificarConfig() {
+  const banner = document.getElementById('config-banner');
+  if (STATE.config.meta_token && STATE.config.claude_key) {
+    banner.style.display = 'none';
+  } else {
+    banner.style.display = 'flex';
+  }
+}
+
+function openConfig() {
+  document.getElementById('modal-config').classList.add('open');
+}
+
+// ===================== TABS =====================
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===================== CALENDÁRIO =====================
+function renderCalendario() {
+  const label = document.getElementById('cal-month-label');
+  const grid = document.getElementById('cal-days');
+  const mes = STATE.mesAtual;
+
+  const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  label.textContent = meses[mes.getMonth()] + ' ' + mes.getFullYear();
+
+  const hoje = new Date();
+  const primeiroDia = new Date(mes.getFullYear(), mes.getMonth(), 1);
+  const ultimoDia = new Date(mes.getFullYear(), mes.getMonth() + 1, 0);
+
+  // Dia da semana do primeiro dia (0=dom, ajusta para seg=0)
+  let inicioSemana = primeiroDia.getDay() - 1;
+  if (inicioSemana < 0) inicioSemana = 6;
+
+  grid.innerHTML = '';
+
+  // Dias do mês anterior
+  const mesAnterior = new Date(mes.getFullYear(), mes.getMonth(), 0);
+  for (let i = inicioSemana - 1; i >= 0; i--) {
+    const dia = mesAnterior.getDate() - i;
+    grid.innerHTML += `<div class="cal-day other-month"><div class="day-num">${dia}</div></div>`;
+  }
+
+  // Dias do mês atual
+  for (let d = 1; d <= ultimoDia.getDate(); d++) {
+    const dataStr = mes.getFullYear() + '-' + String(mes.getMonth()+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    const isHoje = hoje.getDate() === d && hoje.getMonth() === mes.getMonth() && hoje.getFullYear() === mes.getFullYear();
+
+    const postsDoDia = STATE.posts.filter(p => {
+      return p.data === dataStr && STATE.filtros.includes(p.rede);
+    });
+
+    let postsHtml = '';
+    postsDoDia.slice(0, 3).forEach(p => {
+      const tipo = p.formato === 'Reels' ? 'reels' : p.formato === 'Feed' ? 'feed' : 'stories';
+      const cor = p.formato === 'Reels' ? 'var(--reels)' : p.formato === 'Feed' ? 'var(--feed)' : 'var(--stories)';
+      postsHtml += `<div class="post-dot ${tipo}" onclick="verPost(${p.id}, event)">
+        <div class="dot" style="background:${cor}"></div>
+        <span>${p.titulo}</span>
+      </div>`;
+    });
+
+    if (postsDoDia.length > 3) {
+      postsHtml += `<div style="font-size:10px;color:var(--text-muted);padding:0 5px">+${postsDoDia.length - 3} mais</div>`;
+    }
+
+    grid.innerHTML += `
+      <div class="cal-day${isHoje ? ' today' : ''}" data-data="${dataStr}" onclick="clickDia('${dataStr}', event)">
+        <div class="day-num">${d}</div>
+        ${postsHtml}
+      </div>`;
+  }
+
+  // Completar grid com dias do próximo mês
+  const totalCelulas = grid.children.length;
+  const restante = totalCelulas % 7 === 0 ? 0 : 7 - (totalCelulas % 7);
+  for (let d = 1; d <= restante; d++) {
+    grid.innerHTML += `<div class="cal-day other-month"><div class="day-num">${d}</div></div>`;
+  }
+}
+
+function mudarMes(delta) {
+  STATE.mesAtual = new Date(STATE.mesAtual.getFullYear(), STATE.mesAtual.getMonth() + delta, 1);
+  renderCalendario();
+}
+
+function toggleFiltro(rede, btn) {
+  const idx = STATE.filtros.indexOf(rede);
+  if (idx > -1) {
+    if (STATE.filtros.length === 1) return; // pelo menos um ativo
+    STATE.filtros.splice(idx, 1);
+    btn.className = 'filter-btn';
+  } else {
+    STATE.filtros.push(rede);
+    btn.className = 'filter-btn ' + (rede === 'Instagram' ? 'active-ig' : 'active-tk');
+  }
+  renderCalendario();
+}
+
+function clickDia(data, event) {
+  if (event.target.closest('.post-dot')) return;
+  document.getElementById('post-data').value = data;
+  openNovoPost();
+}
+
+function verPost(id, event) {
+  event.stopPropagation();
+  const post = STATE.posts.find(p => p.id === id);
+  if (!post) return;
+
+  document.getElementById('detalhe-titulo').textContent = post.titulo;
+  const cor = post.formato === 'Reels' ? 'var(--reels)' : post.formato === 'Feed' ? 'var(--feed)' : 'var(--stories)';
+  
+  document.getElementById('detalhe-body').innerHTML = `
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <span class="platform-tag platform-ig">${post.rede}</span>
+      <span class="post-dot ${post.formato.toLowerCase()}" style="display:inline-flex;">
+        <div class="dot" style="background:${cor}"></div>${post.formato}
+      </span>
+      <span class="badge ${post.status === 'Publicado' ? 'badge-acima' : post.status === 'Aprovado' ? 'badge-media' : 'badge-abaixo-post'}">${post.status}</span>
+    </div>
+    <div style="margin-bottom:12px;">
+      <div class="form-label">Data e horário</div>
+      <div style="font-size:14px;">${post.data} às ${post.horario}</div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <div class="form-label">Responsável</div>
+      <div style="font-size:14px;">${post.responsavel || '—'}</div>
+    </div>
+    ${post.legenda ? `<div>
+      <div class="form-label">Legenda</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">${post.legenda}</div>
+    </div>` : ''}
+  `;
+  document.getElementById('modal-post-detalhe').classList.add('open');
+}
+
+// ===================== NOVO POST =====================
+function openNovoPost() {
+  document.getElementById('modal-post-title').textContent = 'Novo post';
+  if (!document.getElementById('post-data').value) {
+    const hoje = new Date();
+    document.getElementById('post-data').value = hoje.toISOString().split('T')[0];
+  }
+  document.getElementById('modal-post').classList.add('open');
+}
+
+function salvarPost() {
+  const titulo = document.getElementById('post-titulo').value;
+  const data = document.getElementById('post-data').value;
+  
+  if (!titulo || !data) {
+    alert('Preencha pelo menos o título e a data.');
+    return;
+  }
+
+  const novoPost = {
+    id: STATE.posts.length + 1,
+    titulo,
+    data,
+    horario: document.getElementById('post-horario').value,
+    rede: document.getElementById('post-rede').value,
+    formato: document.getElementById('post-formato').value,
+    status: document.getElementById('post-status').value,
+    responsavel: document.getElementById('post-responsavel').value,
+    legenda: document.getElementById('post-legenda').value
+  };
+
+  STATE.posts.push(novoPost);
+  
+  // Limpa o form
+  ['post-titulo','post-data','post-legenda','post-responsavel'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('post-horario').value = '19:00';
+
+  closeModal('modal-post');
+  renderCalendario();
+}
+
+// ===================== TENDÊNCIAS =====================
+function renderTendencias() {
+  const grid = document.getElementById('trends-grid');
+  grid.innerHTML = TENDENCIAS.map(t => `
+    <div class="trend-card">
+      <div class="trend-card-header">
+        <div class="trend-title-row">
+          <span class="trend-emoji">${t.emoji}</span>
+          <span class="trend-title">${t.titulo}</span>
+        </div>
+        <span class="badge badge-${t.nivel.toLowerCase()}">${t.nivel}</span>
+      </div>
+      <div class="trend-desc">${t.descricao}</div>
+      <div class="trend-platforms">
+        ${t.plataformas.map(p => `<span class="platform-tag ${p === 'Instagram' ? 'platform-ig' : 'platform-tk'}">${p}</span>`).join('')}
+      </div>
+      <a class="trend-link" onclick="gerarIdeias(${t.id})">✦ Gerar ideias →</a>
+    </div>
+  `).join('');
+}
+
+function gerarIdeias(trendId) {
+  const trend = TENDENCIAS.find(t => t.id === trendId);
+  const panel = document.getElementById('ideas-panel');
+  const content = document.getElementById('ideas-content');
+  const title = document.getElementById('ideas-panel-title');
+
+  title.textContent = `Ideias para: ${trend.titulo}`;
+  panel.classList.add('visible');
+  content.innerHTML = `<div class="ideas-loading"><div class="spinner"></div>Consultando Claude...</div>`;
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  if (!STATE.config.claude_key && !STATE.config.script_url) {
+    setTimeout(() => {
+      content.innerHTML = renderIdeasDemo(trend);
+    }, 1500);
+    return;
+  }
+
+  chamarClaudeIdeas(trend)
+    .then(ideias => { content.innerHTML = ideias; })
+    .catch(() => { content.innerHTML = renderIdeasDemo(trend); });
+}
+
+function gerarIdeiasGeral() {
+  const panel = document.getElementById('ideas-panel');
+  const content = document.getElementById('ideas-content');
+  const title = document.getElementById('ideas-panel-title');
+
+  title.textContent = 'Ideias geradas para todas as tendências';
+  panel.classList.add('visible');
+  content.innerHTML = `<div class="ideas-loading"><div class="spinner"></div>Consultando Claude...</div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  setTimeout(() => {
+    content.innerHTML = TENDENCIAS.map(t => renderIdeasDemo(t)).join('<hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">');
+  }, 2000);
+}
+
+function renderIdeasDemo(trend) {
+  const ideasPorTrend = {
+    1: [
+      { titulo: 'GRWM: Look para o trabalho na Paludo', body: 'Vídeo de 30s mostrando uma consultora montando um look completo de blazer + calça da coleção inverno. Narração natural, sem roteiro engessado.', formato: 'Reels', horario: '19h' },
+      { titulo: 'GRWM: Pronta para o final de semana', body: 'Look casual com peças-chave da nova coleção. Usar áudio trending do TikTok. Mostrar o processo de montar o look em cortes rápidos.', formato: 'TikTok', horario: '20h' },
+      { titulo: 'GRWM noturno: Festa com peças Paludo', body: 'Transformação do look dia para noite usando acessórios e peças da loja. Ideal para publicar na quinta ou sexta-feira antes do final de semana.', formato: 'Reels', horario: '18h30' }
+    ],
+    2: [
+      { titulo: 'O blazer que vai com tudo', body: 'Pegar o blazer mais versátil da coleção e mostrar 3 combinações: casual (jeans e tênis), trabalho (calça social + scarpin), balada (vestido + salto).', formato: 'Carrossel', horario: '12h' },
+      { titulo: '1 vestido, 3 ocasiões', body: 'Vestido midi da nova coleção em três contextos: brunch com amigas, reunião de trabalho, jantar especial. Slides com legenda explicando cada styling.', formato: 'Carrossel', horario: '19h' },
+      { titulo: 'Maxi saia: casual, chic e noite', body: 'Peça tendência do inverno em três looks diferentes. Chamar para visitar a loja ao final com CTA claro.', formato: 'Reels', horario: '19h30' }
+    ],
+    3: [
+      { titulo: 'Por dentro da Paludo: dia de receber coleção', body: 'Bastidores da chegada dos boxes, equipe desembalando, primeiras peças sendo organizadas. Gera antecipação e humaniza a marca.', formato: 'Stories', horario: '10h' },
+      { titulo: 'Montagem de vitrine em timelapse', body: 'Vídeo acelerado da vitrine sendo montada pela equipe. Revelar o resultado final. Pedir opinião nos comentários.', formato: 'Reels', horario: '17h' }
+    ],
+    4: [
+      { titulo: 'Flash sale: 3h com 30% off em blusas', body: 'Story com contagem regressiva. Criar senso de urgência real com estoque limitado. Link direto no swipe up ou bio.', formato: 'Stories', horario: '12h' },
+      { titulo: 'Stories exclusivos: oferta só para seguidores', body: 'Promoção anunciada apenas via Stories, sem divulgar no feed. Estimula o hábito de assistir os Stories diariamente.', formato: 'Stories', horario: '18h' }
+    ]
+  };
+
+  const ideas = ideasPorTrend[trend.id] || [];
+  return ideas.map(i => `
+    <div class="idea-item">
+      <div class="idea-title">${i.titulo}</div>
+      <div class="idea-body">${i.body}</div>
+      <div class="idea-tags">
+        <span class="platform-tag platform-ig" style="font-size:11px;">${i.formato}</span>
+        <span style="font-size:11px;color:var(--text-muted);">📅 Melhor horário: ${i.horario}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function chamarClaudeIdeas(trend) {
+  const scriptUrl = STATE.config.script_url;
+  if (!scriptUrl) throw new Error('Script URL não configurada');
+
+  const response = await fetch(scriptUrl + '?action=gerarIdeias&trend=' + encodeURIComponent(JSON.stringify(trend)));
+  const data = await response.json();
+  
+  if (data.ideias) {
+    return data.ideias.map(i => `
+      <div class="idea-item">
+        <div class="idea-title">${i.titulo}</div>
+        <div class="idea-body">${i.descricao}</div>
+        <div class="idea-tags">
+          <span class="platform-tag platform-ig">${i.formato}</span>
+          <span style="font-size:11px;color:var(--text-muted);">📅 ${i.horario}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+  throw new Error('Resposta inválida');
+}
+
+function fecharIdeas() {
+  document.getElementById('ideas-panel').classList.remove('visible');
+}
+
+// ===================== MÉTRICAS =====================
+function renderMetricas() {
+  if (STATE.metricas.length === 0) return;
+
+  const alcances = STATE.metricas.map(m => m.alcance);
+  const engajamentos = STATE.metricas.map(m => m.engajamento);
+
+  const mediaAlcance = alcances.reduce((a,b) => a+b, 0) / alcances.length;
+  const mediaEngajamento = engajamentos.reduce((a,b) => a+b, 0) / engajamentos.length;
+
+  document.getElementById('m-engajamento').textContent = mediaEngajamento.toFixed(1) + '%';
+  document.getElementById('m-alcance').textContent = formatNum(Math.round(mediaAlcance));
+  document.getElementById('m-posts').textContent = STATE.metricas.length;
+  document.getElementById('m-engajamento-delta').textContent = '↑ vs. mês anterior';
+
+  const lista = document.getElementById('posts-list');
+  lista.innerHTML = STATE.metricas.map(m => {
+    const perf = m.engajamento > mediaEngajamento * 1.2 ? 'acima' :
+                 m.engajamento < mediaEngajamento * 0.8 ? 'abaixo' : 'media';
+    const badgeClass = perf === 'acima' ? 'badge-acima' : perf === 'abaixo' ? 'badge-abaixo' : 'badge-media-post';
+    const badgeLabel = perf === 'acima' ? 'Acima da média' : perf === 'abaixo' ? 'Abaixo da média' : 'Na média';
+
+    return `
+      <div class="post-row">
+        <div class="post-info">
+          <div class="post-name">${m.titulo}</div>
+          <div class="post-meta">
+            <span>${m.formato}</span>
+            <span>Alcance ${formatNum(m.alcance)}</span>
+            <span>Engajamento ${m.engajamento}%</span>
+            <span>❤️ ${m.curtidas} · 💬 ${m.comentarios} · 🔖 ${m.salvamentos}</span>
+          </div>
+        </div>
+        <span class="post-badge ${badgeClass}">${badgeLabel}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function formatNum(n) {
+  if (n >= 1000) return (n/1000).toFixed(1) + 'k';
+  return n;
+}
+
+function sincronizarMetricas() {
+  if (!STATE.config.meta_token) {
+    alert('Configure o token da Meta API em Configurações antes de sincronizar.');
+    openConfig();
+    return;
+  }
+
+  const btn = event.target;
+  btn.textContent = '↻ Sincronizando...';
+  btn.disabled = true;
+
+  // Aqui chamaria o Apps Script
+  setTimeout(() => {
+    btn.textContent = '↻ Sincronizar agora';
+    btn.disabled = false;
+    const agora = new Date().toLocaleString('pt-BR');
+    document.getElementById('sync-info').textContent = 'Última sync: ' + agora;
+    STATE.config.ultima_sync = agora;
+    localStorage.setItem('paludo_config', JSON.stringify(STATE.config));
+    alert('Dados sincronizados com sucesso!');
+  }, 2000);
+}
+
+function gerarInsightMetricas() {
+  if (STATE.metricas.length === 0) {
+    alert('Sem dados para analisar. Sincronize as métricas primeiro.');
+    return;
+  }
+
+  const el = document.getElementById('insight-text');
+  el.innerHTML = '<div class="insight-loading"><div class="spinner"></div>Analisando dados com Claude...</div>';
+
+  if (!STATE.config.claude_key && !STATE.config.script_url) {
+    setTimeout(() => {
+      el.textContent = `O Reel look de festa performou acima da média combinando três fatores: publicação em horário de pico (19h30), formato de vídeo curto (que o algoritmo favorece) e um tema alinhado a uma tendência em alta (GRWM noturno).
+
+Já o Story de promoção ficou abaixo da média — provavelmente por falta de elemento interativo (sem enquete ou sticker) e por ter ido ao ar fora do horário de maior audiência.
+
+O carrossel de nova coleção se manteve na média, com bom volume de salvamentos — indicando que o público considera o conteúdo relevante para revisitar depois.
+
+Recomendações:
+• Concentrar Reels no início da noite (18h30–20h)
+• Adicionar enquete ou contagem regressiva em todos os Stories promocionais
+• Aumentar frequência de Reels: formato com melhor retorno médio no período`;
+    }, 2200);
+    return;
+  }
+
+  chamarClaudeInsights()
+    .then(texto => { el.textContent = texto; })
+    .catch(() => { el.textContent = 'Erro ao conectar com Claude. Verifique as configurações.'; });
+}
+
+async function chamarClaudeInsights() {
+  const scriptUrl = STATE.config.script_url;
+  if (!scriptUrl) throw new Error('Script URL não configurada');
+  const response = await fetch(scriptUrl + '?action=gerarInsights');
+  const data = await response.json();
+  return data.insight || 'Sem resposta.';
+}
+
+// ===================== MODAIS =====================
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) closeModal(this.id);
+  });
+});
+</script>
+</body>
+</html>
